@@ -14,3 +14,4 @@ abstract class ActivityModule {
     @ContributesAndroidInjector(modules = [FragmentModule::class])
     abstract fun contributeAuthenticationActivity(): AuthenticationActivity
 }
+

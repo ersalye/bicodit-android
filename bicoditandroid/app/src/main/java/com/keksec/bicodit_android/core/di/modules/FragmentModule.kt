@@ -17,3 +17,4 @@ abstract class FragmentModule {
     @ContributesAndroidInjector
     abstract fun contributeRegistrationFragment(): RegistrationFragment
 }
+

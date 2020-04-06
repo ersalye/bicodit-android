@@ -7,3 +7,4 @@ data class LoginValidationState(
     val loginError: Int? = null,
     val passwordError: Int? = null
 )
+

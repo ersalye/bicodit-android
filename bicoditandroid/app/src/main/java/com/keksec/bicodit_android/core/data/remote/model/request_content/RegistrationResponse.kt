@@ -9,3 +9,4 @@ data class RegistrationResponse(
     val token: String,
     val userData: UserData
 )
+

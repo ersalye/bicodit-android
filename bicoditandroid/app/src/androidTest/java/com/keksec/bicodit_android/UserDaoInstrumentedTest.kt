@@ -114,3 +114,4 @@ class UserDaoInstrumentedTest {
         assertThat(dbUser).isEqualTo(user)
     }
 }
+

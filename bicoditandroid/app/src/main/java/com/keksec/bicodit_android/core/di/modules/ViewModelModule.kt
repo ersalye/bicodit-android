@@ -36,3 +36,4 @@ internal abstract class ViewModelModule {
     @ViewModelKey(RegistrationViewModel::class)
     protected abstract fun registrationViewModel(registrationViewModel: RegistrationViewModel): ViewModel
 }
+

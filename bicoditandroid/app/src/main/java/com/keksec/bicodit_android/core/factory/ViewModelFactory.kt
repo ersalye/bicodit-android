@@ -26,3 +26,4 @@ constructor(private val viewModels: MutableMap<Class<out ViewModel>, Provider<Vi
         }
     }
 }
+

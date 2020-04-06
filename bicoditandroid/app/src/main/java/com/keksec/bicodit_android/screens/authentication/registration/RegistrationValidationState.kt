@@ -8,3 +8,4 @@ data class RegistrationValidationState(
     val loginError: Int? = null,
     val passwordError: Int? = null
 )
+

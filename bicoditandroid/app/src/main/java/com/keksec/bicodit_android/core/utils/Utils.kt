@@ -12,3 +12,4 @@ object Utils {
     const val URL_REGISTER = "/bicoditapi/account/register"
     const val URL_LOGIN = "/bicoditapi/account/login"
 }
+

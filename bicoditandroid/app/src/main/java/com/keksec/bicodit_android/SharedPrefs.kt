@@ -14,3 +14,4 @@ class SharedPrefs(context: Context) {
         get() = prefs.getString(AUTH_TOKEN, "")
         set(value) = prefs.edit().putString(AUTH_TOKEN, value).apply()
 }
+

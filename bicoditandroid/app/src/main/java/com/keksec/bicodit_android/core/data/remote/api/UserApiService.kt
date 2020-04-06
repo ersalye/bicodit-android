@@ -20,3 +20,4 @@ interface UserApiService {
     @POST(Utils.URL_REGISTER)
     fun registerAsync(@Body registrationBody: RegistrationBody): Deferred<Response<RegistrationResponse>>
 }
+

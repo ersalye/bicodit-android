@@ -103,3 +103,4 @@ class RegistrationViewModel @Inject constructor(userDao: UserDao, userApiService
         }
     }
 }
+

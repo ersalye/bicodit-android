@@ -48,3 +48,4 @@ interface AppComponent {
      * */
     fun inject(appController: AppController)
 }
+

@@ -90,3 +90,4 @@ class AuthValidatorsTest {
         assertThat(noLatinLetterResult).isEqualTo(INVALID_PASSWORD_CHARS_ERROR_RESOURCE)
     }
 }
+

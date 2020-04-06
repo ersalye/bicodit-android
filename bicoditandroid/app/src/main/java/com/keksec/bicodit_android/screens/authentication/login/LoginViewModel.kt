@@ -74,3 +74,4 @@ class LoginViewModel @Inject constructor(userDao: UserDao, userApiService: UserA
         }
     }
 }
+

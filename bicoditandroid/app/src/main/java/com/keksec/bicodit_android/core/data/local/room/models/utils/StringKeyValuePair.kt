@@ -6,3 +6,4 @@ import androidx.room.Entity
 data class StringKeyValuePair(
     val key: String, val value: String
 )
+

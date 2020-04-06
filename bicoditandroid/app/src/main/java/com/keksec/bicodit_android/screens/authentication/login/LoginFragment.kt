@@ -166,3 +166,4 @@ class LoginFragment : Fragment() {
         Toast.makeText(appContext, getString(errorId), Toast.LENGTH_LONG).show()
     }
 }
+

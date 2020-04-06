@@ -23,3 +23,4 @@ class AuthenticationActivity : DaggerAppCompatActivity() {
         setContentView(R.layout.activity_authentication)
     }
 }
+

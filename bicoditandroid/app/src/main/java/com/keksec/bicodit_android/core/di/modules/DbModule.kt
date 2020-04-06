@@ -35,3 +35,4 @@ class DbModule {
         return appDatabase.userDao()
     }
 }
+

@@ -27,3 +27,4 @@ interface StringKeyValueDao {
     @Query("SELECT * FROM StringKeyValuePair")
     suspend fun getAll(): List<StringKeyValuePair>?
 }
+

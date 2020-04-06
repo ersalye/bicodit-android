@@ -52,3 +52,4 @@ interface UserDao {
     @Query("SELECT * FROM UserData")
     fun getFlow(): Flow<UserData>
 }
+
