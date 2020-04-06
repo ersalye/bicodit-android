@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">bicodit-android</string>
+    <!-- Strings related to login and registration errors -->
+    <string name="invalid_login_characters">Логин может содержать только символы \'a–z\', \'0–9\', \'_\'</string>
+    <string name="invalid_login_length">Длина логина должна быть от 6 до 40 символов</string>
+    <string name="invalid_password_characters">Пароль должен содержать по крайней мере 1 латинскую букву и 1 цифру</string>
+    <string name="invalid_password_length">Длина пароля должна быть от 6 до 30 символов</string>
+    <string name="invalid_email">Вы ввели некорректный email</string>
+    <!-- Strings related to login an registration layout -->
+    <string name="email_placeholder">Введите email…</string>
+    <string name="login_placeholder">Введите логин…</string>
+    <string name="password_placeholder">Введите пароль…</string>
+    <string name="sign_in_action">Войти</string>
+    <string name="sign_up_action">Зарегистрироваться</string>
+    <string name="no_account_text">Нет аккаунта?</string>
+    <string name="have_account_text">Уже есть аккаунт?</string>
+    <string name="to_login">Вход</string>
+    <string name="to_registration">Регистрация</string>
+    <!-- Strings related to server errors -->
+    <string name="no_response">Не удалось получить ответ от сервера</string>
+    <string name="user_not_found">Не удалось найти пользователя</string>
+    <string name="bad_request">Не удалось завершить запрос с этими данными</string>
+    <string name="bad_password">Неверный пароль</string>
+    <string name="failed_login">Не удалось выполнить вход</string>
+    <string name="failed_registration">Не удалось зарегистрировать пользователя</string>
+    <string name="user_exists">Пользователь с таким email или логин уже существует</string>
+</resources>
