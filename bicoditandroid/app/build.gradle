@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: "androidx.navigation.safeargs"
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -77,6 +78,9 @@ dependencies {
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:4.4.0"
     androidTestImplementation "com.squareup.okhttp3:logging-interceptor:4.4.0"
     androidTestImplementation "com.squareup.okhttp3:okhttp:4.4.0"
+
+    //firebase lib for analytics
+    implementation 'com.google.firebase:firebase-analytics:17.3.0'
 
     //fragment navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'

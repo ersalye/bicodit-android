@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "680732579020",
+    "firebase_url": "https://bicodit-android.firebaseio.com",
+    "project_id": "bicodit-android",
+    "storage_bucket": "bicodit-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680732579020:android:429400ac4656148880de69",
+        "android_client_info": {
+          "package_name": "com.keksec.bicodit_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "680732579020-n1mp18h5l9fgtrhfvs258hsislq9h5lo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8Fl-s14s7vFmHnmBQMmSpM7tUFNXgR0Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "680732579020-n1mp18h5l9fgtrhfvs258hsislq9h5lo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

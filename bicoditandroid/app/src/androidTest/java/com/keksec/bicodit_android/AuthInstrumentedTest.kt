@@ -4,18 +4,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.google.common.truth.Truth.assertThat
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.keksec.bicodit_android.core.data.local.room.dao.user.UserDao
 import com.keksec.bicodit_android.core.data.local.room.db.AppDatabase
 import com.keksec.bicodit_android.core.data.local.room.models.user.UserData
 import com.keksec.bicodit_android.core.data.remote.api.UserApiService
+import com.keksec.bicodit_android.core.data.remote.model.Error
 import com.keksec.bicodit_android.core.data.remote.model.Event
 import com.keksec.bicodit_android.core.data.repository.LoginRepository
-import com.google.common.truth.Truth.assertThat
-import com.keksec.bicodit_android.core.data.remote.model.Error
 import com.keksec.bicodit_android.core.data.repository.RegistrationRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -44,10 +46,10 @@ class AuthInstrumentedTest {
     @Throws(Exception::class)
     fun createDb() {
         db = Room.inMemoryDatabaseBuilder(
-                InstrumentationRegistry.getInstrumentation().targetContext,
-                AppDatabase::class.java
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            AppDatabase::class.java
         )
-                .build()
+            .build()
         userDao = db.userDao()
     }
 
@@ -64,11 +66,11 @@ class AuthInstrumentedTest {
         mockWebServer.dispatcher = dispatcher
 
         val userApiService = Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
-                .baseUrl(mockWebServer.url("/"))
-                .build()
-                .create(UserApiService::class.java)
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .baseUrl(mockWebServer.url("/"))
+            .build()
+            .create(UserApiService::class.java)
 
         loginRepository = LoginRepository(userDao, userApiService)
         registrationRepository = RegistrationRepository(userDao, userApiService)
@@ -146,27 +148,37 @@ class AuthInstrumentedTest {
         testCorrectErrorMessageForTestedStatusInRegistrationRepo("test-exception", -1)
     }
 
-    private fun testCorrectErrorMessageForTestedStatusInLoginRepo(testedKey: String, testedStatus: Int) {
+    private fun testCorrectErrorMessageForTestedStatusInLoginRepo(
+        testedKey: String,
+        testedStatus: Int
+    ) {
         runBlocking {
             val userLiveData = MutableLiveData<Event<UserData>>()
-            loginRepository.loginUser(userLiveData, testedKey, "test")
+            withContext(Dispatchers.Default) {
+                loginRepository.loginUser(userLiveData, testedKey, "test")
+            }
             val users = userDao.getAll()
             assertThat(users.size).isEqualTo(0)
             val expected = Event.error<Error>(
-                    Error(loginRepository.getErrorMessage(testedStatus))
+                Error(loginRepository.getErrorMessage(testedStatus))
             )
             assertThat(userLiveData.value).isEqualTo(expected)
         }
     }
 
-    private fun testCorrectErrorMessageForTestedStatusInRegistrationRepo(testedKey: String, testedStatus: Int) {
+    private fun testCorrectErrorMessageForTestedStatusInRegistrationRepo(
+        testedKey: String,
+        testedStatus: Int
+    ) {
         runBlocking {
             val userLiveData = MutableLiveData<Event<UserData>>()
-            registrationRepository.registerUser(userLiveData, testedKey, "test", "test")
+            withContext(Dispatchers.Default) {
+                registrationRepository.registerUser(userLiveData, testedKey, "test", "test")
+            }
             val users = userDao.getAll()
             assertThat(users.size).isEqualTo(0)
             val expected = Event.error<Error>(
-                    Error(registrationRepository.getErrorMessage(testedStatus))
+                Error(registrationRepository.getErrorMessage(testedStatus))
             )
             assertThat(userLiveData.value).isEqualTo(expected)
         }
@@ -190,31 +202,31 @@ class AuthInstrumentedTest {
                     "/bicoditapi/account/login" -> {
                         when (login) {
                             "test-success" -> return MockResponse()
-                                    .setResponseCode(200)
-                                    .setHeader("content-type", "application/json")
-                                    .setBody(getBody())
+                                .setResponseCode(200)
+                                .setHeader("content-type", "application/json")
+                                .setBody(getBody())
                             "test-status-400" -> return MockResponse()
-                                    .setResponseCode(400)
+                                .setResponseCode(400)
                             "test-status-403" -> return MockResponse()
-                                    .setResponseCode(403)
+                                .setResponseCode(403)
                             "test-status-404" -> return MockResponse()
-                                    .setResponseCode(404)
+                                .setResponseCode(404)
                             "test-exception" -> return MockResponse()
-                                    .setHttp2ErrorCode(0x7)
+                                .setHttp2ErrorCode(0x7)
                         }
                     }
                     "/bicoditapi/account/register" -> {
                         when (login) {
                             "test-success" -> return MockResponse()
-                                    .setResponseCode(200)
-                                    .setHeader("content-type", "application/json")
-                                    .setBody(getBody())
+                                .setResponseCode(200)
+                                .setHeader("content-type", "application/json")
+                                .setBody(getBody())
                             "test-status-400" -> return MockResponse()
-                                    .setResponseCode(400)
+                                .setResponseCode(400)
                             "test-status-403" -> return MockResponse()
-                                    .setResponseCode(403)
+                                .setResponseCode(403)
                             "test-exception" -> return MockResponse()
-                                    .setHttp2ErrorCode(0x7)
+                                .setHttp2ErrorCode(0x7)
                         }
                     }
                 }
