@@ -9,7 +9,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 29
-
+    ndkVersion "21.0.6113669"
     defaultConfig {
         applicationId "com.keksec.bicodit_android"
         minSdkVersion 19
