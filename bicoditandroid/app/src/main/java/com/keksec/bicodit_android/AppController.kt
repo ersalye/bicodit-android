@@ -2,6 +2,7 @@ package com.keksec.bicodit_android
 
 import android.app.Activity
 import android.app.Application
+import androidx.multidex.MultiDexApplication
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
@@ -11,7 +12,7 @@ import javax.inject.Inject
  * This way a DispatchingAndroidInjector is injected which is
  * then returned when an injector for an activity is requested.
  * */
-class AppController : Application(), HasActivityInjector {
+class AppController : MultiDexApplication(), HasActivityInjector {
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
