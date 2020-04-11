@@ -11,7 +11,6 @@ import com.keksec.bicodit_android.core.data.remote.model.Event
 import com.keksec.bicodit_android.core.data.remote.model.request_content.RegistrationBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.internal.wait
 import javax.inject.Singleton
 
 /**

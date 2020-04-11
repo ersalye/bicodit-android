@@ -1,6 +1,9 @@
 package com.keksec.bicodit_android
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -13,11 +16,10 @@ import com.keksec.bicodit_android.core.data.local.room.models.user.UserData
 import com.keksec.bicodit_android.core.data.remote.api.UserApiService
 import com.keksec.bicodit_android.core.data.remote.model.Error
 import com.keksec.bicodit_android.core.data.remote.model.Event
+import com.keksec.bicodit_android.core.data.remote.model.Status
 import com.keksec.bicodit_android.core.data.repository.LoginRepository
 import com.keksec.bicodit_android.core.data.repository.RegistrationRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -28,6 +30,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 @RunWith(AndroidJUnit4::class)
 class AuthInstrumentedTest {
@@ -88,6 +91,61 @@ class AuthInstrumentedTest {
     }
 
     @Test
+    fun whenServerRespondsToLoginRepoThenSetCorrectErrorMessage() {
+        val testStatuses = listOf(400, 403, 404, -1)
+        testStatuses.forEach { status ->
+                val userLiveData = MutableLiveData<Event<UserData>>()
+                runBlocking {
+                    loginRepository.loginUser(userLiveData, getTestedKey(status), "test")
+                }
+                Handler(Looper.getMainLooper()).post {
+                    userLiveData.observeForever {
+                        Observer<Event<UserData>> {
+                            if (it.status != Status.LOADING) {
+                                val users = userDao.getAll()
+                                assertThat(users.size).isEqualTo(0)
+                                val expected = Event.error<Error>(
+                                    Error(loginRepository.getErrorMessage(status))
+                                )
+                                assertThat(userLiveData.value).isEqualTo(expected)
+                            }
+                        }
+                    }
+                }
+        }
+    }
+
+    @Test
+    fun whenServerRespondsToRegistrationRepoThenSetCorrectErrorMessage() {
+        val testStatuses = listOf(400, 403, -1)
+        testStatuses.forEach { status ->
+            val userLiveData = MutableLiveData<Event<UserData>>()
+            runBlocking {
+                registrationRepository.registerUser(
+                    userLiveData,
+                    getTestedKey(status),
+                    "test",
+                    "test"
+                )
+            }
+            Handler(Looper.getMainLooper()).post {
+                userLiveData.observeForever {
+                    Observer<Event<UserData>> {
+                        if (it.status != Status.LOADING) {
+                            val users = userDao.getAll()
+                            assertThat(users.size).isEqualTo(0)
+                            val expected = Event.error<Error>(
+                                Error(registrationRepository.getErrorMessage(status))
+                            )
+                            assertThat(userLiveData.value).isEqualTo(expected)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
     fun whenSuccessfullyLoginUserThenInsertOneToDb() {
         runBlocking {
             val userLiveData = MutableLiveData<Event<UserData>>()
@@ -113,75 +171,8 @@ class AuthInstrumentedTest {
         }
     }
 
-    @Test
-    fun whenServerRespondsToLoginRepoWithStatus400ThenSetCorrectErrorMessage() {
-        testCorrectErrorMessageForTestedStatusInLoginRepo("test-status-400", 400)
-    }
-
-    @Test
-    fun whenServerRespondsToRegistrationRepoWithStatus400ThenSetCorrectErrorMessage() {
-        testCorrectErrorMessageForTestedStatusInRegistrationRepo("test-status-400", 400)
-    }
-
-    @Test
-    fun whenServerRespondsToLoginRepoWithStatus403ThenSetCorrectErrorMessage() {
-        testCorrectErrorMessageForTestedStatusInLoginRepo("test-status-403", 403)
-    }
-
-    @Test
-    fun whenServerRespondsToRegistrationRepoWithStatus403ThenSetCorrectErrorMessage() {
-        testCorrectErrorMessageForTestedStatusInRegistrationRepo("test-status-403", 403)
-    }
-
-    @Test
-    fun whenServerRespondsToLoginRepoWithStatus404ThenSetCorrectErrorMessage() {
-        testCorrectErrorMessageForTestedStatusInLoginRepo("test-status-404", 404)
-    }
-
-    @Test
-    fun whenServerRespondsToLoginRepoWithExceptionThenSetCorrectErrorMessage() {
-        testCorrectErrorMessageForTestedStatusInLoginRepo("test-exception", -1)
-    }
-
-    @Test
-    fun whenServerRespondsToRegistrationRepoWithExceptionThenSetCorrectErrorMessage() {
-        testCorrectErrorMessageForTestedStatusInRegistrationRepo("test-exception", -1)
-    }
-
-    private fun testCorrectErrorMessageForTestedStatusInLoginRepo(
-        testedKey: String,
-        testedStatus: Int
-    ) {
-        runBlocking {
-            val userLiveData = MutableLiveData<Event<UserData>>()
-            withContext(Dispatchers.Default) {
-                loginRepository.loginUser(userLiveData, testedKey, "test")
-            }
-            val users = userDao.getAll()
-            assertThat(users.size).isEqualTo(0)
-            val expected = Event.error<Error>(
-                Error(loginRepository.getErrorMessage(testedStatus))
-            )
-            assertThat(userLiveData.value).isEqualTo(expected)
-        }
-    }
-
-    private fun testCorrectErrorMessageForTestedStatusInRegistrationRepo(
-        testedKey: String,
-        testedStatus: Int
-    ) {
-        runBlocking {
-            val userLiveData = MutableLiveData<Event<UserData>>()
-            withContext(Dispatchers.Default) {
-                registrationRepository.registerUser(userLiveData, testedKey, "test", "test")
-            }
-            val users = userDao.getAll()
-            assertThat(users.size).isEqualTo(0)
-            val expected = Event.error<Error>(
-                Error(registrationRepository.getErrorMessage(testedStatus))
-            )
-            assertThat(userLiveData.value).isEqualTo(expected)
-        }
+    private fun getTestedKey(statusValue: Int): String {
+        return if (statusValue != -1) "test-status-$statusValue" else "test-exception"
     }
 
     private fun getBody(): String {
