@@ -3,7 +3,6 @@ package com.keksec.bicodit_android.screens.authentication.login
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +11,17 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.keksec.bicodit_android.R
 import com.keksec.bicodit_android.core.data.remote.model.Status
+import com.keksec.bicodit_android.screens.authentication.AuthenticationActivity
+import com.keksec.bicodit_android.screens.authentication.NavListener
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import pl.droidsonroids.gif.GifImageView
-import timber.log.Timber
 import javax.inject.Inject
 
 class LoginFragment : Fragment() {
@@ -27,7 +30,10 @@ class LoginFragment : Fragment() {
 
     lateinit var loginViewModel: LoginViewModel
 
+    private var listener: NavListener? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        listener = activity as AuthenticationActivity?
         super.onCreate(savedInstanceState)
 
         AndroidSupportInjection.inject(this)
@@ -72,7 +78,7 @@ class LoginFragment : Fragment() {
             })
 
         fun showLoading() {
-            staticImage.visibility = View.INVISIBLE
+            staticImage.visibility = View.GONE
             animationView.visibility = View.VISIBLE
 
             loginLoginBtn.isEnabled = false
@@ -82,7 +88,7 @@ class LoginFragment : Fragment() {
 
         fun stopLoading() {
             staticImage.visibility = View.VISIBLE
-            animationView.visibility = View.INVISIBLE
+            animationView.visibility = View.GONE
 
             loginLoginBtn.isEnabled = true
             loginLoginTxt.isEnabled = true
@@ -102,7 +108,7 @@ class LoginFragment : Fragment() {
                     }
                     Status.SUCCESS -> {
                         stopLoading()
-                        Timber.d("SUCCESS")
+                        listener?.navigateToMainActivity()
                     }
                 }
             })
@@ -137,10 +143,12 @@ class LoginFragment : Fragment() {
         }
 
         fun loginBtnClickedListener() {
-            loginViewModel.loginUser(
-                loginLoginTxt.text.toString(),
-                loginPasswordTxt.text.toString()
-            )
+            lifecycleScope.launch(Dispatchers.IO) {
+                loginViewModel.loginUser(
+                    loginLoginTxt.text.toString(),
+                    loginPasswordTxt.text.toString()
+                )
+            }
         }
 
         fun transitionToRegClickedListener() {

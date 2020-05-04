@@ -3,6 +3,7 @@ package com.keksec.bicodit_android.core.data.repository
 import androidx.lifecycle.MutableLiveData
 import com.keksec.bicodit_android.AppController
 import com.keksec.bicodit_android.R
+import com.keksec.bicodit_android.core.data.helpers.RequestHelpers.getLoginErrorMessage
 import com.keksec.bicodit_android.core.data.local.room.dao.user.UserDao
 import com.keksec.bicodit_android.core.data.local.room.models.user.UserData
 import com.keksec.bicodit_android.core.data.remote.api.UserApiService
@@ -24,7 +25,7 @@ class LoginRepository(
 
     /**
      * This method requests server with user data and if successful saves account data to the database
-     * Finally, it sets up operation result and notifies the login view model of a change
+     * Finally, it sets up operation result thus notifying the login fragment of a change
      *
      * @param liveData is the lifecycle important live data to holds login operation result
      * @param login is the user's login
@@ -47,29 +48,15 @@ class LoginRepository(
                 if (responseStatus == 200 && responseBody != null) {
                     userDao.deleteAllAndInsert(responseBody.userData)
                     AppController.prefs.accessToken = responseBody.token
+                    AppController.prefs.userId = responseBody.userData.id
                     liveData.postValue(Event.success(null))
                 } else {
-                    liveData.postValue(Event.error(Error(getErrorMessage(responseStatus))))
+                    liveData.postValue(Event.error(Error(getLoginErrorMessage(responseStatus))))
                 }
             } catch (e: Exception) {
-                liveData.postValue(Event.error(Error(getErrorMessage(-1)))
+                liveData.postValue(Event.error(Error(R.string.failed_login))
                 )
             }
-        }
-    }
-
-    /**
-     * This function is used to get error message for login operations
-     *
-     * @param responseStatus - server response status
-     * @return an address of a resource with an error message
-     */
-    fun getErrorMessage(responseStatus: Int): Int {
-        return when (responseStatus) {
-            400 -> R.string.bad_request
-            403 -> R.string.bad_password
-            404 -> R.string.user_not_found
-            else -> R.string.failed_login
         }
     }
 }

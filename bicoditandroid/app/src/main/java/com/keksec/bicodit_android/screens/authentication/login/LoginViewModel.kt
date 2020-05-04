@@ -3,15 +3,12 @@ package com.keksec.bicodit_android.screens.authentication.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.keksec.bicodit_android.core.data.local.room.dao.user.UserDao
 import com.keksec.bicodit_android.core.data.local.room.models.user.UserData
 import com.keksec.bicodit_android.core.data.remote.api.UserApiService
 import com.keksec.bicodit_android.core.data.remote.model.Event
 import com.keksec.bicodit_android.core.data.repository.LoginRepository
-import com.keksec.bicodit_android.screens.authentication.helpers.Validators
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.keksec.bicodit_android.screens.helpers.Validators
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(userDao: UserDao, userApiService: UserApiService) :
@@ -27,13 +24,11 @@ class LoginViewModel @Inject constructor(userDao: UserDao, userApiService: UserA
             userApiService
         )
 
-    fun loginUser(login: String, password: String) {
+    suspend fun loginUser(login: String, password: String) {
         if (Validators.isLoginValid(login) == 0
             && Validators.isPasswordValid(password) == 0
         ) {
-            viewModelScope.launch(Dispatchers.IO) {
-                loginRepository.loginUser(_userLiveData, login, password)
-            }
+            loginRepository.loginUser(_userLiveData, login, password)
         } else {
             loginChanged(login)
             passwordChanged(password)
@@ -44,15 +39,15 @@ class LoginViewModel @Inject constructor(userDao: UserDao, userApiService: UserA
         val loginValidationError: Int? = Validators.isLoginValid(login)
         loginValidationError?.let { errorMessage ->
             if (errorMessage != 0) {
-                _loginValidationState.value = LoginValidationState(
+                _loginValidationState.postValue(LoginValidationState(
                     loginError = errorMessage,
                     passwordError = _loginValidationState.value?.passwordError
-                )
+                ))
             } else {
-                _loginValidationState.value = LoginValidationState(
+                _loginValidationState.postValue(LoginValidationState(
                     loginError = null,
                     passwordError = _loginValidationState.value?.passwordError
-                )
+                ))
             }
         }
     }
@@ -61,15 +56,15 @@ class LoginViewModel @Inject constructor(userDao: UserDao, userApiService: UserA
         val passwordValidationError: Int? = Validators.isPasswordValid(password)
         passwordValidationError?.let { errorMessage ->
             if (errorMessage != 0) {
-                _loginValidationState.value = LoginValidationState(
+                _loginValidationState.postValue(LoginValidationState(
                     loginError = _loginValidationState.value?.loginError,
                     passwordError = errorMessage
-                )
+                ))
             } else {
-                _loginValidationState.value = LoginValidationState(
+                _loginValidationState.postValue(LoginValidationState(
                     loginError = _loginValidationState.value?.loginError,
                     passwordError = null
-                )
+                ))
             }
         }
     }

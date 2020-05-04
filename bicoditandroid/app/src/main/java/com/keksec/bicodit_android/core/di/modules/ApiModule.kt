@@ -4,20 +4,19 @@ import android.app.Application
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.keksec.bicodit_android.BuildConfig
+import com.keksec.bicodit_android.core.data.remote.api.RatingApiService
 import com.keksec.bicodit_android.core.data.remote.api.UserApiService
+import com.keksec.bicodit_android.core.data.remote.interceptor.RequestInterceptor
 import com.keksec.bicodit_android.core.utils.Utils.BASE_URL
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -58,6 +57,7 @@ class ApiModule {
 
         val httpClient = OkHttpClient.Builder()
         httpClient.cache(cache)
+        httpClient.addInterceptor(RequestInterceptor())
         httpClient.addInterceptor(logging)
         httpClient.connectTimeout(15, TimeUnit.SECONDS)
         httpClient.readTimeout(15, TimeUnit.SECONDS)
@@ -85,6 +85,15 @@ class ApiModule {
     @Singleton
     internal fun provideUserApiService(retrofit: Retrofit): UserApiService {
         return retrofit.create(UserApiService::class.java)
+    }
+
+    /*
+    * The method returns the RatingApiService
+    * */
+    @Provides
+    @Singleton
+    internal fun provideRatingApiService(retrofit: Retrofit): RatingApiService {
+        return retrofit.create(RatingApiService::class.java)
     }
 }
 

@@ -3,16 +3,12 @@ package com.keksec.bicodit_android.screens.authentication.registration
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.keksec.bicodit_android.core.data.local.room.dao.user.UserDao
 import com.keksec.bicodit_android.core.data.local.room.models.user.UserData
 import com.keksec.bicodit_android.core.data.remote.api.UserApiService
 import com.keksec.bicodit_android.core.data.remote.model.Event
 import com.keksec.bicodit_android.core.data.repository.RegistrationRepository
-import com.keksec.bicodit_android.screens.authentication.helpers.Validators
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.keksec.bicodit_android.screens.helpers.Validators
 import javax.inject.Inject
 
 class RegistrationViewModel @Inject constructor(userDao: UserDao, userApiService: UserApiService) :
@@ -29,13 +25,12 @@ class RegistrationViewModel @Inject constructor(userDao: UserDao, userApiService
             userApiService
         )
 
-    fun registerUser(email: String, login: String, password: String) {
-        if (Validators.isLoginValid(login) == 0
+    suspend fun registerUser(email: String, login: String, password: String) {
+        if (Validators.isEmailValid(email) == 0
+            && Validators.isLoginValid(login) == 0
             && Validators.isPasswordValid(password) == 0
         ) {
-            viewModelScope.launch(Dispatchers.IO) {
-                registrationRepository.registerUser(_userLiveData, email, login, password)
-            }
+            registrationRepository.registerUser(_userLiveData, email, login, password)
         } else {
             emailChanged(email)
             loginChanged(login)
@@ -47,16 +42,20 @@ class RegistrationViewModel @Inject constructor(userDao: UserDao, userApiService
         val registrationValidationError: Int? = Validators.isEmailValid(email)
         registrationValidationError?.let { errorMessage ->
             if (errorMessage != 0) {
-                _registrationValidationState.value = RegistrationValidationState(
-                    emailError = errorMessage,
-                    loginError = _registrationValidationState.value?.loginError,
-                    passwordError = _registrationValidationState.value?.passwordError
+                _registrationValidationState.postValue(
+                    RegistrationValidationState(
+                        emailError = errorMessage,
+                        loginError = _registrationValidationState.value?.loginError,
+                        passwordError = _registrationValidationState.value?.passwordError
+                    )
                 )
             } else {
-                _registrationValidationState.value = RegistrationValidationState(
-                    emailError = null,
-                    loginError = _registrationValidationState.value?.loginError,
-                    passwordError = _registrationValidationState.value?.passwordError
+                _registrationValidationState.postValue(
+                    RegistrationValidationState(
+                        emailError = null,
+                        loginError = _registrationValidationState.value?.loginError,
+                        passwordError = _registrationValidationState.value?.passwordError
+                    )
                 )
             }
         }
@@ -66,17 +65,20 @@ class RegistrationViewModel @Inject constructor(userDao: UserDao, userApiService
         val registrationValidationError: Int? = Validators.isLoginValid(login)
         registrationValidationError?.let { errorMessage ->
             if (errorMessage != 0) {
-                _registrationValidationState.value =
+                _registrationValidationState.postValue(
                     RegistrationValidationState(
                         emailError = _registrationValidationState.value?.emailError,
                         loginError = errorMessage,
                         passwordError = _registrationValidationState.value?.passwordError
                     )
+                )
             } else {
-                _registrationValidationState.value = RegistrationValidationState(
-                    emailError = _registrationValidationState.value?.emailError,
-                    loginError = null,
-                    passwordError = _registrationValidationState.value?.passwordError
+                _registrationValidationState.postValue(
+                    RegistrationValidationState(
+                        emailError = _registrationValidationState.value?.emailError,
+                        loginError = null,
+                        passwordError = _registrationValidationState.value?.passwordError
+                    )
                 )
             }
         }
@@ -86,19 +88,21 @@ class RegistrationViewModel @Inject constructor(userDao: UserDao, userApiService
         val registrationValidationError: Int? = Validators.isPasswordValid(password)
         registrationValidationError?.let { errorMessage ->
             if (errorMessage != 0) {
-                _registrationValidationState.value =
+                _registrationValidationState.postValue(
                     RegistrationValidationState(
                         emailError = _registrationValidationState.value?.emailError,
                         loginError = _registrationValidationState.value?.loginError,
                         passwordError = errorMessage
                     )
+                )
             } else {
-                _registrationValidationState.value =
+                _registrationValidationState.postValue(
                     RegistrationValidationState(
                         emailError = _registrationValidationState.value?.emailError,
                         loginError = _registrationValidationState.value?.loginError,
                         passwordError = null
                     )
+                )
             }
         }
     }

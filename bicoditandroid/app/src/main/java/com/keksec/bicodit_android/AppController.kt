@@ -1,14 +1,14 @@
 package com.keksec.bicodit_android
 
+import DaggerAppComponent
 import android.app.Activity
-import android.app.Application
 import androidx.multidex.MultiDexApplication
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
 
 /*
- * we use our AppComponent to inject ApplicationController class.
+ * AppComponent is used to inject ApplicationController class.
  * This way a DispatchingAndroidInjector is injected which is
  * then returned when an injector for an activity is requested.
  * */
