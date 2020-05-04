@@ -11,14 +11,16 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.keksec.bicodit_android.R
 import com.keksec.bicodit_android.core.data.remote.model.Status
-import com.keksec.bicodit_android.screens.authentication.login.LoginViewModel
+import com.keksec.bicodit_android.screens.authentication.AuthenticationActivity
+import com.keksec.bicodit_android.screens.authentication.NavListener
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_registration.*
-import timber.log.Timber
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class RegistrationFragment : Fragment() {
@@ -27,7 +29,10 @@ class RegistrationFragment : Fragment() {
 
     lateinit var registrationViewModel: RegistrationViewModel
 
+    private var listener: NavListener? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        listener = activity as AuthenticationActivity?
         super.onCreate(savedInstanceState)
 
         AndroidSupportInjection.inject(this)
@@ -44,7 +49,8 @@ class RegistrationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        registrationViewModel = ViewModelProvider(this, viewModelFactory).get(RegistrationViewModel::class.java)
+        registrationViewModel =
+            ViewModelProvider(this, viewModelFactory).get(RegistrationViewModel::class.java)
 
         val staticImage = view.findViewById<ImageView>(R.id.registrationBicorabbit)
         val animationView =
@@ -108,7 +114,7 @@ class RegistrationFragment : Fragment() {
                     }
                     Status.SUCCESS -> {
                         stopLoading()
-                        Timber.d("SUCCESS")
+                        listener?.navigateToMainActivity()
                     }
                 }
             })
@@ -158,11 +164,13 @@ class RegistrationFragment : Fragment() {
         }
 
         fun registrationBtnClickedListener() {
-            registrationViewModel.registerUser(
-                registrationEmailTxt.text.toString(),
-                registrationLoginTxt.text.toString(),
-                registrationPasswordTxt.text.toString()
-            )
+            lifecycleScope.launch(Dispatchers.IO) {
+                registrationViewModel.registerUser(
+                    registrationEmailTxt.text.toString(),
+                    registrationLoginTxt.text.toString(),
+                    registrationPasswordTxt.text.toString()
+                )
+            }
         }
 
         fun transitionToRegClickedListener() {

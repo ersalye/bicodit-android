@@ -1,13 +1,12 @@
 package com.keksec.bicodit_android.core.data.remote.api
 
-import com.keksec.bicodit_android.core.data.remote.model.request_content.LoginBody
-import com.keksec.bicodit_android.core.data.remote.model.request_content.LoginResponse
-import com.keksec.bicodit_android.core.data.remote.model.request_content.RegistrationBody
-import com.keksec.bicodit_android.core.data.remote.model.request_content.RegistrationResponse
+import android.service.autofill.UserData
+import com.keksec.bicodit_android.core.data.remote.model.request_content.*
 import com.keksec.bicodit_android.core.utils.Utils
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 /**
@@ -19,5 +18,8 @@ interface UserApiService {
 
     @POST(Utils.URL_REGISTER)
     fun registerAsync(@Body registrationBody: RegistrationBody): Deferred<Response<RegistrationResponse>>
+
+    @GET(Utils.URL_GET_ACCOUNT)
+    fun getAccountAsync(): Deferred<Response<AccountResponse>>
 }
 

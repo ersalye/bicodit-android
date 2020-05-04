@@ -19,9 +19,30 @@
     <!-- Strings related to server errors -->
     <string name="no_response">Не удалось получить ответ от сервера</string>
     <string name="user_not_found">Не удалось найти пользователя</string>
+    <string name="no_user_data">Не удалось получить данные пользователя</string>
     <string name="bad_request">Не удалось завершить запрос с этими данными</string>
     <string name="bad_password">Неверный пароль</string>
     <string name="failed_login">Не удалось выполнить вход</string>
     <string name="failed_registration">Не удалось зарегистрировать пользователя</string>
     <string name="user_exists">Пользователь с таким email или логин уже существует</string>
+    <!-- Strings related to home layout -->
+    <string name="settings">Настройки</string>
+    <string name="quit_account">Выйти</string>
+    <string name="title_home">Профиль</string>
+    <string name="title_chats">Чаты</string>
+    <string name="title_notifications">Уведомления</string>
+    <string name="title_people">Люди</string>
+    <string name="logout_failed">Не удалось выйти</string>
+    <string name="tell_about_yourself">Например, расскажите о себе…</string>
+    <string name="add_rating_action">Добавить рейтинг</string>
+    <string name="write_something">Напишите что-нибудь</string>
+    <string name="choose_your_rating">Выберите свой рейтинг</string>
+    <string name="invalid_about">Максимальная длина этого поля 300 символов</string>
+    <string name="title_rating">Рейтинг</string>
+    <string name="title_add">Добавить рейтинг</string>
+    <string name="create_rating_failed">Не удалось создать рейтинг</string>
+    <string name="failed_get_ratings">Не удалось получить рейтинги</string>
+    <string name="title_ratings">Рейтинги</string>
+    <string name="no_ratings">Пока нет рейтингов</string>
+    <string name="user_information_error">Не удалось получить информацию о пользователе</string>
 </resources>

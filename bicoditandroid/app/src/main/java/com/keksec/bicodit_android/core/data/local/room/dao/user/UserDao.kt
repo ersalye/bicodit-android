@@ -28,7 +28,6 @@ interface UserDao {
 
     @Transaction
     fun deleteAllAndInsert(userData: UserData) {
-        Timber.i("INSERTING DATA")
         deleteAll()
         insert(userData)
     }
@@ -39,17 +38,10 @@ interface UserDao {
 
     @Transaction
     @Query("SELECT * FROM UserData WHERE id = :id")
-    fun getUserById(id: String): UserData
+    fun getUserById(id: String): UserData?
 
     @Transaction
     @Query("SELECT * FROM UserData")
     fun getAll(): List<UserData>
-
-    /**
-     * This might be used to observe DB changes
-     */
-    @Transaction
-    @Query("SELECT * FROM UserData")
-    fun getFlow(): Flow<UserData>
 }
 

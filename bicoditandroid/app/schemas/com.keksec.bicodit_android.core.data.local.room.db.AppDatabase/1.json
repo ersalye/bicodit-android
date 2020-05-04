@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a9759fab8e4189f9647921b901aaee96",
+    "identityHash": "821037630c3c34ae2cb318c85dfe8bdb",
     "entities": [
       {
         "tableName": "UserData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `email` TEXT NOT NULL, `login` TEXT NOT NULL, `profileName` TEXT NOT NULL, `profileInfo` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `email` TEXT NOT NULL, `login` TEXT NOT NULL, `avatar` TEXT NOT NULL, `profileName` TEXT NOT NULL, `profileInfo` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -27,6 +27,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "avatar",
+            "columnName": "avatar",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "profileName",
             "columnName": "profileName",
             "affinity": "TEXT",
@@ -35,6 +41,62 @@
           {
             "fieldPath": "profileInfo",
             "columnName": "profileInfo",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "RatingData",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `userId` TEXT NOT NULL, `userLogin` TEXT NOT NULL, `userAvatar` TEXT NOT NULL, `text` TEXT NOT NULL, `value` INTEGER NOT NULL, `createdTime` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userLogin",
+            "columnName": "userLogin",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userAvatar",
+            "columnName": "userAvatar",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "text",
+            "columnName": "text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdTime",
+            "columnName": "createdTime",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -78,7 +140,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a9759fab8e4189f9647921b901aaee96')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '821037630c3c34ae2cb318c85dfe8bdb')"
     ]
   }
 }

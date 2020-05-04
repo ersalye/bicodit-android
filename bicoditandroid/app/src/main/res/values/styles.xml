@@ -7,4 +7,19 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ThemeOverlay.App.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <!-- Parent theme sets colorControlNormal to textColorPrimary. -->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
+    <style name="Theme.App" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="textInputStyle">@style/Widget.MyApp.TextInputLayout</item>
+    </style>
+
+    <style name="Widget.MyApp.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+    </style>
+
 </resources>

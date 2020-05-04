@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/createRatingLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screens.main.home.createrating.RatingFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/createRatingToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.App.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="@android:color/white" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createRatingToolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/createRatingScrollViewLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/createRatingBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:background="@color/colorPrimary"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/add_rating_action"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/createRatingValueThree" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/createRatingAboutLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createRatingAboutDesc">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/createRatingAboutEditText"
+            android:layout_width="match_parent"
+            android:background="@android:color/transparent"
+            android:layout_height="wrap_content"
+            android:hint="@string/tell_about_yourself" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <View
+        android:id="@+id/createRatingBottomSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createRatingAboutLayout" />
+
+            <ImageView
+                android:id="@+id/createRatingImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/createRatingChooseRatingDesc"
+                tools:srcCompat="@drawable/super_sad_panda" />
+
+            <TextView
+                android:id="@+id/createRatingChooseRatingDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/choose_your_rating"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/createRatingBottomSeparator" />
+
+            <TextView
+                android:id="@+id/createRatingAboutDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:text="@string/write_something"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/createRatingScrollViewLayout" />
+
+    <ImageView
+        android:id="@+id/createRatingValueOne"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createRatingValueThree"
+        app:layout_constraintEnd_toStartOf="@+id/createRatingValueTwo"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/createRatingValueThree"
+        tools:srcCompat="@drawable/one_focused" />
+
+    <ImageView
+        android:id="@+id/createRatingValueTwo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createRatingValueThree"
+        app:layout_constraintEnd_toStartOf="@+id/createRatingValueThree"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/createRatingValueOne"
+        app:layout_constraintTop_toTopOf="@+id/createRatingValueThree"
+        tools:srcCompat="@drawable/two_default" />
+
+    <ImageView
+        android:id="@+id/createRatingValueThree"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/createRatingValueFour"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/createRatingValueTwo"
+        app:layout_constraintTop_toBottomOf="@+id/createRatingImage"
+        tools:srcCompat="@drawable/three_default" />
+
+    <ImageView
+        android:id="@+id/createRatingValueFour"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createRatingValueThree"
+        app:layout_constraintEnd_toStartOf="@+id/createRatingValueFive"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/createRatingValueThree"
+        app:layout_constraintTop_toTopOf="@+id/createRatingValueThree"
+        tools:srcCompat="@drawable/four_default" />
+
+    <ImageView
+        android:id="@+id/createRatingValueFive"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/createRatingValueThree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/createRatingValueFour"
+        app:layout_constraintTop_toTopOf="@+id/createRatingValueThree"
+        tools:srcCompat="@drawable/five_default" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

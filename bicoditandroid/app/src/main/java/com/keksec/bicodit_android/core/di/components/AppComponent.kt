@@ -1,7 +1,6 @@
 import android.app.Application
 import com.keksec.bicodit_android.AppController
 import com.keksec.bicodit_android.core.di.modules.*
-import com.keksec.bicodit_android.core.di.modules.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -21,7 +20,8 @@ import javax.inject.Singleton
         DbModule::class,
         ViewModelModule::class,
         ActivityModule::class,
-        FragmentModule::class,
+        AuthFragmentModule::class,
+        HomeFragmentModule::class,
         AndroidSupportInjectionModule::class]
 )
 @Singleton
