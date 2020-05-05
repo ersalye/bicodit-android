@@ -13,6 +13,7 @@ import com.mikhaellopez.circularimageview.CircularImageView
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
+import org.threeten.bp.temporal.ChronoField
 import java.util.*
 
 /**
@@ -53,7 +54,7 @@ class RatingsAdapter(val context: Context, var items: List<RatingData>, val call
             ratingAvatar.setImageResource(avatarResourceId)
             ratingLogin.text = rating.userLogin
             val l = Locale("ru","RU")
-            if (rating.createdTime.isBefore(OffsetDateTime.now().minusDays(1))) {
+            if (rating.createdTime.isBefore(OffsetDateTime.now().with(ChronoField.HOUR_OF_DAY, 0))) {
                 ratingDate.text = rating.createdTime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(l))
             } else {
                 ratingDate.text = rating.createdTime.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(l))
